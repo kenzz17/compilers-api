@@ -19,11 +19,11 @@ function docker_run(filename, lang){
                     '-c', 'g++ /my/main.cpp; ./a.out < /my/in'
                 ],{detached:true});
                 setTimeout(()=>{
-                        resolve({"error":">4 seconds: Time limit exceeded"});
+                        resolve({"error":">4 seconds: Time limit exceeded","stdout":"","stderr":""});
                 }, 4000);
                 docker_cpp.stdout.setEncoding('utf-8');
                 docker_cpp.stderr.setEncoding('utf-8');
-                const resp = {"stdout":"", "stderr":""};
+                const resp = {"stdout":"", "stderr":"","error":""};
                 docker_cpp.stderr.on('data', (data)=>{resp.stderr += data});
                 docker_cpp.stdout.on('data', (data)=>{
                         resp.stdout += data;
@@ -32,7 +32,7 @@ function docker_run(filename, lang){
                         }
                 });
                 docker_cpp.on('exit', ()=>resolve(resp));
-                docker_cpp.on('error', ()=>resolve({"error":"Docker error"}));
+                docker_cpp.on('error', ()=>resolve({"error":"Docker error","stdout":"","stderr":""}));
                 break;
             case 'py':
                 const docker_py = spawn('sudo', [
@@ -48,11 +48,11 @@ function docker_run(filename, lang){
                     '-c', 'python3 /my/main.py < /my/in'
                 ], {detached:true});
                 setTimeout(()=>{
-                        resolve({"error":">4 seconds: Time limit exceeded"});
+                        resolve({"error":">4 seconds: Time limit exceeded","stdout":"","stderr":""});
                 }, 4000);
                 docker_py.stdout.setEncoding('utf-8');
                 docker_py.stderr.setEncoding('utf-8');
-                const resp_ = {"stdout":"", "stderr":""};
+                const resp_ = {"stdout":"", "stderr":"","error":""};
                 docker_py.stderr.on('data', (data)=>{resp_.stderr += data});
                 docker_py.stdout.on('data', (data)=>{
                         resp_.stdout += data;
@@ -61,10 +61,10 @@ function docker_run(filename, lang){
                         }
                 });
                 docker_py.on('exit', ()=>resolve(resp_));
-                docker_py.on('error', ()=>resolve({"error":"Docker error"}));
+                docker_py.on('error', ()=>resolve({"error":"Docker error","stdout":"","stderr":""}));
                 break;
             default:
-                resolve({"error":"suppoted languages are cpp, py"})
+                resolve({"error":"suppoted languages are cpp, py","stdout":"","stderr":""})
         }
     });
 }
