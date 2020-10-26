@@ -9,10 +9,14 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 app.get('/', (req, res) => {
-    res.send('Send the code that needs to be executed as a post request')
+    res.send('Send post requests as {"lang":"---", "code":"---", "stdin":"---"}')
 })
 
-app.post('/', (req,res) => {
+app.get('/v1', (req, res) => {
+    res.send('Send post requests as {"lang":"---", "code":"---", "stdin":"---"}')
+})
+
+app.post('/v1', (req,res) => {
     filename = uuid.v4();
     spawn('mkdir', ['-p', './temp/'+filename]).on('exit',() => {
     fs.writeFile('./temp/'+filename+'/main.'+req.body.lang, req.body.code, (err1) => {
@@ -41,32 +45,3 @@ app.post('/', (req,res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
-
-
-
-
-
-
-
-// const compiler = spawn('g++', ['-o', './temp/'+filename, full_filename]);
-// compilation_err = '';
-// compiler.stderr.on('data', (data)=>{compilation_err = data.toString()});
-// compiler.on('exit', ()=>{
-//     spawn('rm', [full_filename]);
-//     const runner = spawn('./temp/'+filename);
-    
-//     // runner.stdin._write(req.body.stdin+"\n",'utf-8', (err)=>console.log(err));
-//     // runner.stdin.end();
-//     // runner.on('error', ()=>{
-//     //     return res.json({"error-type":"compilation","stderr":compilation_err});
-//     // });
-//     runner.stdout.on('data', (data)=>{
-//         spawn('rm', ['./temp/'+filename]);
-//         return res.json({"stdout":data.toString()});
-//     })
-//     runner.stderr.on('data', (data)=>{
-//         spawn('rm', ['./temp/'+filename]);
-//         return res.json({"error-type":"runtime","stderr":data.toString()});
-//     })
-// })
