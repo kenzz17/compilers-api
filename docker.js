@@ -64,7 +64,7 @@ function docker_run(filename, lang){
                 docker_py.on('error', ()=>resolve({"error":"Docker error","stdout":"","stderr":""}));
                 break;
             default:
-                resolve({"error":"suppoted languages are cpp, py","stdout":"","stderr":""})
+                resolve({"error":"supported languages are cpp, py","stdout":"","stderr":""})
         }
     });
 }
