@@ -45,7 +45,7 @@ app.post('/v1', async (req,res) => {
             res.json(data);
         })
        .catch(()=>{
-            spawn('sudo', ['rm', './temp/'+filename]);
+            spawn('sudo', ['rm','-r', './temp/'+filename]);
             res.json({"error":"Unable to run/compile", "stderr":"", "stdout":""});
         });
 })

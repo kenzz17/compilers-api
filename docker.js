@@ -43,6 +43,9 @@ function docker_run(filename, lang){
             case 'py':
                 run('python3 /my/main.py < /my/in', 'run-python', filename, full_dirname, resolve);
                 break;
+            case 'js':
+                run('node /my/main.js < /my/in', 'run-js', filename, full_dirname, resolve);
+                break;
             default:
                 resolve({"error":"supported languages are cpp, py","stdout":"","stderr":""})
         }
