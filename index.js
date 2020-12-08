@@ -27,7 +27,7 @@ app.post('/v1', async (req, res) => {
     if (req.body.passwd != '314159kenzz17') return res.json({ "error": "Access Denied", "stdout": "", "stdout": "" });
 
     filename = uuid.v4();
-    toRun = '__main__.' + req.body.lang;
+    toRun = '___main___.' + req.body.lang;
     try {
         spawnSync('sudo', ['mkdir', '-p', './temp/' + filename]);
         const code = writeFile_promise('./temp/' + filename + '/' + toRun, req.body.code);
@@ -53,12 +53,12 @@ app.post('/v2', async (req, res) => {
     if (req.body.passwd != '314159kenzz17') return res.json({ "error": "Access Denied", "stdout": "", "stdout": "" });
 
     filename = uuid.v4();
-    toRun = '__main__.' + req.body.lang;
+    toRun = '___main___.' + req.body.lang;
     try {
         spawnSync('sudo', ['mkdir', '-p', './temp/' + filename]);
         const helper = [];
         req.body.helper.forEach((ele, idx) => {
-            helper.push(writeFile_promise('./temp/' + filename + '/' + ele.name + '.' + ele.lang, ele.body));
+            helper.push(writeFile_promise('./temp/' + filename + '/' + ele.name, ele.body));
         });
         const code = writeFile_promise('./temp/' + filename + '/' + toRun, req.body.code);
         const stdin = writeFile_promise('./temp/' + filename + '/in', req.body.stdin);
@@ -83,11 +83,11 @@ app.post('/v3', async (req, res) => {
     if (req.body.passwd != '314159kenzz17') return res.json({ "error": "Access Denied", "stdout": "", "stdout": "" });
 
     filename = uuid.v4();
-    toRun = req.body.path + '/' + req.body.name + '.' + req.body.lang;
+    toRun = req.body.path + '/' + req.body.name;
     try {
         const helper = [];
         req.body.helper.forEach((ele, idx) => {
-            file = './temp/' + filename + '/' + ele.path + '/' + ele.name + '.' + ele.lang;
+            file = './temp/' + filename + '/' + ele.path + '/' + ele.name;
             dir = './temp/' + filename + '/' + ele.path + '/';
             spawnSync('sudo', ['mkdir', '-p', dir]);
             helper.push(writeFile_promise(file, ele.body));
